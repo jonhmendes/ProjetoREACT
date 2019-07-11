@@ -19,8 +19,8 @@ public class SbApplication {
 	@Bean
 	ApplicationRunner run(EventoRepository repo) {
 		Stream<Evento> eventos = Stream.of(
-				new Evento(null,"2018-06-26 16:00", "2018-06-26 18:00", "Dar banho no cachorro", "Banho cachorro"),
-				new Evento(null,"2018-06-26 16:00", "2018-06-26 18:00", "Ir buscar meu carro na oficina", "Mecânico"));
+				new Evento("jonathan.mendes89@gmail.com", "123"),
+				new Evento("teste@gmail.com", "123"));
 		return args -> {
 				eventos.forEach(repo::save);
 		};

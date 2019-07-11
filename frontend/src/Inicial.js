@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import './App.css';
-import Cabecalho from './componentes/Cabecalho';
-import { Link } from 'react-router-dom';
-//import DatePicker from 'react-native-datepicker';
 
-class Inicial extends Component {
+//import DatePicker from 'react-native-datepicker';
+import {Title, Wrapper,StyledLink,Button} from './componentes/tarefas/styles'
+
+export default class Inicial extends Component {
 
   constructor(props) {
     super(props);
@@ -16,7 +15,8 @@ class Inicial extends Component {
       dataHoraInicio: new Date(),
       dataHoraFim:new Date(),
       itemLista: '',
-      lista: [],
+      lista:[],
+      novoItem: [],
       
     };
   }
@@ -27,48 +27,115 @@ class Inicial extends Component {
 
   adiciona(e) {
     e.preventDefault();
-    this.setState(estadoAnterior => ({
-      lista: estadoAnterior.lista.concat(this.state.itemLista)
-    }));
+    const {addItem} = this.setState;
+    
+
+    this.setState({
+      addItem: [...this.state.novoItem , addItem]
+    });
   }
+
+  add(e) {
+    e.preventDefault();
+    
+    this.setState(estadoAnterior => ({
+      novoItem: estadoAnterior.novoItem.concat(this.state.itemLista)
+    })
+    
+    );
+ 
+  }
+
+  
+
+  trataAlteracao(nomeInput, evento) {
+    this.setState({[nomeInput]: evento.target.value}); 
+  }
+
+  removeItem(item){
+    const novo =  this.state.novoItem.filter(lista => {
+      return lista !== item;
+    });
+      this.setState({
+        novoItem:[...novo]
+      })
+      if(novo.length === 0){
+        this.setState({
+          message:'sem items no seu rascunho LOCAL, adicione '
+        })
+      }
+  } 
 
   render() {
+    const { novoItem, message} = this.state;
     return (
-      <div className="App">
-        <Cabecalho titulo="Minha Agenda" />
-        <p className="App-intro"><br/>
-        <div className = 'agenda--form'>
-        
-        </div>
-          <br/>
-          <ul>
-          Inserir lembrete {this.state.lista.map(item => (<li>{item}</li>))}
-          </ul>
-          {this.state.nome} - {this.state.descricao}
 
-        </p>
-        <form onSubmit={this.adiciona.bind(this)} >
-          <div>
-            <label htmlFor="entrada">Nome:</label>
-            <input id="entrada" type="text" value={this.state.nome} onChange={this.trataAlteracao.bind(this, 'nome')} />
-          </div>
-          <br/><br/>
-          <div>
-            <label htmlFor="descricao">descricao:</label>
-            <input id="descricao" type="text" value={this.state.descricao} onChange={this.trataAlteracao.bind(this, 'descricao')} />
-          </div>
-          <br/><br/>
-          <div>
+ <div>
+    
+
+   <Wrapper>
+              <form  onSubmit={this.add.bind(this)}>
+                <div>
+                    <label htmlFor="nome">adicione um novo item</label>
+                    <input type="text" placeholder="qual nome do lembrete?" id="nome"value={this.state.nome} onChange={this.trataAlteracao.bind(this, 'nome')}/>
+                </div>
+
+                <div>
+                    <label htmlFor="descricao">adicione uma descrição</label>
+                    <input type="text" placeholder="digite um novo lembrete"value={this.state.descricao} onChange={this.trataAlteracao.bind(this, 'descricao')} />
+                </div>
+
+                <div>
+                      <Button type="submit"> ADD</Button>
+                </div>
+              </form>
+
+        <div>
+              { 
+                      (message !== '' || novoItem.length >0) && <p>{message}</p> 
+                }
           
-          <button type="submit" > inserir lembrete</button>
-          </div>
-        
-        </form>
-        <br/><br/>
-        <Link to="/agenda">Agendar tarefas</Link>
-      </div>
+              {
+                    novoItem.length >0 &&
+            
+            
+          <table>
+                <caption>Shopping</caption>
+                    <thead>
+                          <tr>
+                            <th scope="col">#</th>
+                            <th >Atividade</th>
+                            <th >Descrição</th>
+                            <th >actions</th>
+                          </tr>
+                    </thead>
+
+                    <tbody>
+                        {
+                          novoItem.map(item => {
+                              return (
+                      
+                          <tr key={item}>
+                            <th scope="row">1</th>
+                              <td>{this.state.nome}</td>
+                              <td>{this.state.descricao}</td> 
+                              <td>  <Button onClick={e => this.removeItem(item)} >Delete</Button> </td>
+                          </tr>
+                                      )
+                                              }
+                                    )
+                              
+                                    }
+                    </tbody>
+          </table>
+      }
+        </div>
+              <StyledLink to="/agenda" >Agendar tarefas</StyledLink>
+    </Wrapper>
+  </div>
     );
   }
+
 }
 
-export default Inicial;
+

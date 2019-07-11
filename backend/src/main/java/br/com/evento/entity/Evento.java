@@ -1,8 +1,7 @@
 package br.com.evento.entity;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+
 import javax.validation.constraints.NotNull;
 
 
@@ -13,18 +12,12 @@ import lombok.Data;
 @Data
 public class Evento {
 	
-	@Id
-	@GeneratedValue
-	private Long id;
+
 	@NotNull
-	private String dataHoraInicio;
+	private String email;
 	@NotNull
-	private String dataHoraFim;
-	@NotNull
-	private String descricao;
-	@NotNull
-	private String nome;
-	
+	private String password;
+
 
 public Evento() {
 	// TODO Auto-generated constructor stub
@@ -32,69 +25,46 @@ public Evento() {
 
 
 
-
-
-public Evento(Long id, String dataHoraInicio, String dataHoraFim, String descricao, String nome) {
+public Evento( String email, String password) {
 	super();
-	this.id = id;
-	this.dataHoraInicio = dataHoraInicio;
-	this.dataHoraFim = dataHoraFim;
-	this.descricao = descricao;
-	this.nome = nome;
+	this.email = email;
+	this.password = password;
+}
+
+
+@Override
+public String toString() {
+	return "Evento [ email=" + email + ", password=" + password + "]";
 }
 
 
 
 
 
-public Long getId() {
-	return id;
+public String getEmail() {
+	return email;
 }
 
 
-public void setId(Long id) {
-	this.id = id;
+
+public void setEmail(String email) {
+	this.email = email;
 }
 
 
-public String getDataHoraInicio() {
-	return dataHoraInicio;
+
+public String getPassword() {
+	return password;
 }
 
 
-public void setDataHoraInicio(String dataHoraInicio) {
-	this.dataHoraInicio = dataHoraInicio;
+
+public void setPassword(String password) {
+	this.password = password;
 }
 
 
-public String getDataHoraFim() {
-	return dataHoraFim;
-}
 
-
-public void setDataHoraFim(String dataHoraFim) {
-	this.dataHoraFim = dataHoraFim;
-}
-
-
-public String getDescricao() {
-	return descricao;
-}
-
-
-public void setDescricao(String descricao) {
-	this.descricao = descricao;
-}
-
-
-public String getNome() {
-	return nome;
-}
-
-
-public void setNome(String nome) {
-	this.nome = nome;
-}	
 
 	
 }
